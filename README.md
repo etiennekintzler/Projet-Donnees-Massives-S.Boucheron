@@ -5,5 +5,6 @@ Projet M2 Modélisation Aléatoire avec Minh Tuan Do pour le cours de données m
 
 Ressources:
 -Min hashing:
+
 https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html
 https://www.slaney.org/malcolm/yahoo/Slaney2008-LSHTutorial.pdf

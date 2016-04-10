@@ -8,5 +8,7 @@ Ressources:
 -Min hashing:
 
 https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html
+
 https://www.slaney.org/malcolm/yahoo/Slaney2008-LSHTutorial.pdf
+
 https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf (bonne explication de la fonction de hashage pour un texte)

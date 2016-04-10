@@ -16,6 +16,8 @@ enronpath <- paste(getwd(),"sub",sep="/") # dir of enron data
 
 minhash    <- minhash_generator(n = 240, seed=NULL)
 corpus     <- TextReuseCorpus(dir = enronpath, minhash_func = minhash,skip_short = TRUE)
+#Les warnings obtenus à cette étape ne sont pas grave cf la page
+#http://stackoverflow.com/questions/5990654/incomplete-final-line-warning-when-trying-to-read-a-csv-file-into-r
 
 ## Nombre de bands est divise par nombre de minhash
 buckets <- lsh(corpus, bands = 80, progress = FALSE)

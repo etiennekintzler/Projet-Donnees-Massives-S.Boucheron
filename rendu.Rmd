@@ -1,11 +1,12 @@
 ---
-title: "Projet en Traitement des données massives (S. Boucheron)"
+title: |
+    | Projet en Traitement des données massives 
+    | (S. Boucheron)
 author:  "Minh Tuan Do, Etienne Kintzler"
 output: pdf_document
 header-includes:
   - \usepackage{dsfont, amsmath, amssymb, bm}
 ---
-  
 \section{Introduction}
 Le projet a pour objectif d'utiliser deux méthodes vues en cours, le Locally 
 Sensitive Hashing et le Latent Dirichlet Allocation à une base de donnée 

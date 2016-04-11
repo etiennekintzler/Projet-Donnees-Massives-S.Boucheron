@@ -9,6 +9,10 @@ Option pour Rmarkdown:
 
 http://yihui.name/knitr/options/
 
+Liste des stopwords
+
+http://xpo6.com/list-of-english-stop-words/
+
 Description base de données Enron:
 
 http://ceas.cc/2004/168.pdf
@@ -25,4 +29,4 @@ https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf (bonne explication
 
 http://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
 
-
+http://alberto.bietti.me/files/rapport-lda.pdf

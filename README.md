@@ -5,6 +5,10 @@ Projet M2 Modélisation Aléatoire avec Minh Tuan Do pour le cours de données m
 
 Ressources:
 
+Description base de données Enron:
+
+http://ceas.cc/2004/168.pdf
+
 -Min hashing:
 
 https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.html

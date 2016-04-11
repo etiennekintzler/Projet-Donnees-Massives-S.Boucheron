@@ -12,3 +12,9 @@ https://cran.r-project.org/web/packages/textreuse/vignettes/textreuse-minhash.ht
 https://www.slaney.org/malcolm/yahoo/Slaney2008-LSHTutorial.pdf
 
 https://www.cs.utah.edu/~jeffp/teaching/cs5955/L5-Minhash.pdf (bonne explication de la fonction de hashage pour un texte)
+
+-LDA
+
+http://www.jmlr.org/papers/volume3/blei03a/blei03a.pdf
+
+

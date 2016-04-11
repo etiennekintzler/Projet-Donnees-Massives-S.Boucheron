@@ -6,6 +6,7 @@ Projet M2 Modélisation Aléatoire avec Minh Tuan Do pour le cours de données m
 Ressources:
 
 Option pour Rmarkdown:
+
 http://yihui.name/knitr/options/
 
 Description base de données Enron:

@@ -1,6 +1,6 @@
 ---
 title: "DO_KINT"
-output: html_document
+output: pdf_document
 ---
 
 #Perform approximate nearest neighbor analysis
@@ -40,7 +40,11 @@ On peut ajuster des valeurs de $b$ et $r$ pour manipuler le seuil de $JS(A,B)$ t
 ```{r }
 library("textreuse")
 library("dplyr")
-
+library("tm")
+library("magrittr")
+library("foreach")
+library("SnowballC")
+library("igraph")
 ```
 
 ```{r }
@@ -54,6 +58,35 @@ minhash <- minhash_generator(n = 200)
 ```
 
 Construire le corpus de TextReuseCorpus pour utiliser LSH
+
+```{r, warning=FALSE, eval= FALSE}
+
+dir <- "~/Desktop/projet_bigdata_P7/dta"
+
+Corpus <- VCorpus(DirSource(dir, encoding= "UTF-8"), 
+                    readerControl=list(language= "en") )   
+
+Corpus <- Corpus %>%
+        tm_map(content_transformer(tolower),lazy=TRUE) %>%
+        tm_map(removeWords,stopwords("english"), lazy=TRUE) %>%
+        tm_map(stemDocument,lazy=TRUE) %>% 
+        tm_map(removePunctuation,lazy=TRUE) %>% 
+        tm_map(stripWhitespace,lazy=TRUE) %>%
+        tm_map(removeNumbers,lazy=TRUE)
+```
+
+
+```{r, warning=FALSE, eval= FALSE}
+
+barCorpus <- foreach (doc=Corpus, .combine="c") %do% TextReuseCorpus(text=doc$content, 
+                  tokenizer = tokenize_words,
+                  progress = TRUE,
+                  keep_tokens = TRUE,
+                  keep_text = TRUE, 
+                  skip_short = TRUE)
+
+```
+
 
 ```{r, warning=FALSE}
 dir <- "~/Desktop/projet_bigdata_P7/dta"
@@ -101,9 +134,7 @@ a[2*c(1:nrow(candidates))] = as.integer(candidates$b)
 a[-2*c(1:nrow(candidates))] = as.integer(candidates$a)
 ```
 
-```{r,echo=FALSE, warning=FALSE}
-library(igraph)
-```
+
 
 ```{r}
 gr<-graph( edges=a+1,  directed=F ) 
@@ -129,6 +160,14 @@ library(tm)
 enronp <- "~/Desktop/projet_bigdata_P7/dta"
 Venronp <- VCorpus(DirSource(enronp, encoding= "UTF-8",recursive=T),
                    readerControl=list(language= "en") ) 
+
+Venronp <- Venronp %>%
+        tm_map(content_transformer(tolower),lazy=TRUE) %>%
+        tm_map(removeWords,stopwords("english"), lazy=TRUE) %>%
+        tm_map(stemDocument,lazy=TRUE) %>% 
+        tm_map(removePunctuation,lazy=TRUE) %>% 
+        tm_map(stripWhitespace,lazy=TRUE) %>%
+        tm_map(removeNumbers,lazy=TRUE)
 ```
 
 
@@ -138,7 +177,8 @@ for (i in 1: (clusters$no)) {
   print(paste(" Pour le cluster ", i, "les mots specifiques sont: " ))
   doc = which(clusters$membership== i)
   corpus_cluster = Venronp[doc]
-  mots = findFreqTerms(TermDocumentMatrix(corpus_cluster) , lowfreq = clusters$csize[i], highfreq = Inf)
+  
+  mots = findFreqTerms(TermDocumentMatrix(corpus_cluster) , lowfreq = clusters$csize[i]/2, highfreq = Inf)
   print(mots ) 
   print("==============================================================")}
 ```

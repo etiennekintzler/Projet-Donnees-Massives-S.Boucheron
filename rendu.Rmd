@@ -3,7 +3,7 @@ title: "Projet en Traitement des données massives (S. Boucheron)"
 author:  "Minh Tuan Do, Etienne Kintzler"
 output: pdf_document
 header-includes:
-  - \usepackage{dsfont}
+  - \usepackage{dsfont, amsmath, amssymb, bm}
 ---
   
 \section{Introduction}
@@ -49,8 +49,25 @@ enron    <- VCorpus(DirSource(enronpath, encoding= "UTF-8"),
 
 \section{LSH}
 
-\section{LDA}
+\section{Latent Dirichlet Allocation}
+Le package \texttt{topicmodels} est utilisé pour réaliser le LDA.
+
+\subsection{Formalisation}
+Un \textit{mot} est définit comme un élement do vocabulaire indexé par $\{1,..,|\mathcal{A}|\}$. Des indices sont utilisées pour désigner les composantes d'un mot. Par exemple le \textit{v}-ème mot du dictionnaire est représenté par un vecteur de taille $|\mathcal{A}|$ telle que $w^v=1$ et $w^u=0,\forall u\neq v$.
+
+Un \textit{document} est une N-uplets de mots dénoté $\bm{w}=(w_1,w_2,...,w_N)$ où $w_n$ est le n-ème mot de la séquence.
+
+Un \textit{corpus} est un ensemble de $M$ documents dénoté: $\bm{D}=\{ \bm{w}_1,\bm{w}_2,...,\bm{w}_M \}$ 
 
 \subsection{Présentation du modèle}
+Les PGD pour chacun des documents \textbf{w} du corpus \textit{\textbf{D}} est le suivant:
 
-  
+\begin{enumerate}
+  \item Choisir $N\sim\mathcal{P}(\xi)$
+  \item Choisir $\theta\sim\text{Dir}(\alpha)$
+  \item Pour chacun des $N$ mot $w_n$:
+  \begin{enumerate}
+    \item Choisir un topic $z_n\sim\mathcal{M}(\theta)$
+    \item Choisir un mot $w_n$ a partir de $p(w_n|z_n,\beta)$, une probabilité d'une loi multinomiale conditionné par le topic $z_n$
+  \end{enumerate}
+\end{enumerate}

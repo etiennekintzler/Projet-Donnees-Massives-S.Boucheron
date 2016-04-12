@@ -5,7 +5,7 @@ path_input = "/home/kintzler/R/projet_boucheron/maildir/"
 path_output ="/home/kintzler/R/projet_boucheron/DATA/"
 
 stopwords = stop_words.get_stop_words('en')
-stopwords.extend("asap http www fyi hotmail".split())
+stopwords.extend("asap http www fyi hotmail email e-mail sent forwarded msn asked find send sent ect mail".split())
 stopwords.extend(open("stopwords.txt","r").read().split())
 
 stopwords = list(set(stopwords)) #supprime les doublons

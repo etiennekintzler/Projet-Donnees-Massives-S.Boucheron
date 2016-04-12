@@ -3,22 +3,22 @@ title: "DO_KINT"
 output: pdf_document
 ---
 
-#Perform approximate nearest neighbor analysis
-## Introduction
-Dans le context de text-mining, si on veut détecter des documents similaires ou des documents identiques, on doit construire un modèle qui compare la similarité entre tous les pairs de documents. Par exemple, pour le problème de construire de clusters ou k-plus proches voisins, on peut définir une distance de similarité de Jaccard entre deux documents, et appliquer des algorithmes d'apprentissage non-superisé. Cependent, le coût de calcul va exploser très vite en fontion de taille de données et la dimension du problème. Pour remédier ce problème, on peut utiliser l'algorithme LSH qui utilise des fonctions min-hashing randomnisées pour estimer le cofficient Jaccard-similarité entre des documents afin de trouver des pairs de documents tels que leur coefficient de similarité est supérieur à un niveau donné. L'idée principale est d'utiliser une famille de fonction de hachage choisies telles que des points proches dans l'espace d'origine aient une forte probabilité d'avoir la même valeur de hachage.
+\section{Perform approximate nearest neighbor analysis}
+\subsection{Introduction}
+Dans le context de text-mining, si l'on veut détecter des documents similaires ou des documents identiques, on doit construire un modèle qui compare la similarité entre tous les paires de documents. Par exemple, pour le problème de construction de clusters ou k-plus proches voisins, on peut définir une distance de similarité de Jaccard entre deux documents, et appliquer des algorithmes d'apprentissage non-supervisés. Cependent, le coût de calcul va exploser rapidement lorsque la taille des données ou la dimension du problème augmente. Pour remédier à ce problème, on peut utiliser l'algorithme LSH qui utilise des fonctions min-hashing randomisées pour estimer le cofficient de similarité de Jaccard entre des documents afin de trouver des paires de documents tels que leur coefficient de similarité est supérieur à un niveau donné. L'idée principale est d'utiliser une famille de fonction de hachage choisies telles que des points proches dans l'espace d'origine aient une forte probabilité d'avoir la même valeur de hachage.
 
-## Model LSH pour text mining
+\subsection{Modèle LSH pour text mining}
 
-### Fonction min-hashing
+\subsubsection{Fonction min-hashing}
 
-D'abord, on rappelle la définition de la similarité-Jaccard entre deux documents $A$ et $B$:  
+La définition de la similarité-Jaccard entre deux documents $A$ et $B$:  
 $JS(A,B) =\frac{|A\bigcap B|}{|A \bigcup B|}$  
-Fonction min-hashing $m(. )$ va rendre le rang de premier terme appartient au document selon l'ordre générée par cette fonction hashing. On définit une variable aléatoire $x(A,B)$ telle que :  
+La fonction min-hashing $m(. )$ va rendre le rang de premier terme appartient au document selon l'ordre généré par cette fonction hashing. On définit une variable aléatoire $x(A,B)$ telle que :  
 $x(A,B) = 1$ si $m(A) = m(B)$   
 $x(A,B) =0$  sinon.   
-Par conséquence, la variable aléatoire $x(A,B)$ suit la loi B(JS(A,B)). Donc, on peut estimer la similarité de Jaccard, en générant des observations iid de cette loi $B(JS(A,B))$ par des fonctions min-hashing et moyennant des valuers.  
+Par conséquence, la variable aléatoire $x(A,B)$ suit la loi B(JS(A,B)). Donc, on peut estimer la similarité de Jaccard, en générant des observations iid de cette loi $B(JS(A,B))$ par des fonctions min-hashing et moyennant des valeurs.  
 
-### Locality sensitive hashing (LSH)
+\subsubsection{Locality sensitive hashing (LSH)}
 Dans le cardre de text mining, on utilise la fonction hashing par bloc des singatures générées par les fonctions min-hashing. Effectivement, si l'on considère $n$ signatures avec $b$ blocs de taille $r$ ou bien : $n= b*r$, la fonction LSH considère que deux documents forment un pair de candidat s'ils sont coïncides au moins pour un blocs. La probabilité telle que une pair de documents est une paire de candidat est ainsi donnée par :  
 $P(JS(A,B)) = 1 - ( 1-JS(A,B)^{r} )^ b$  
 
@@ -34,7 +34,7 @@ Cette  probabilité possède une forme S-courbe, croissante $P(0) = 0$ et $P(1) 
 
 On peut ajuster des valeurs de $b$ et $r$ pour manipuler le seuil de $JS(A,B)$ tel que $A$ et $B$ sont un pair de candidats avec une grande probabilité.
 
-## Implémentation sous R 
+\section{Implémentation sous R }
 
 
 ```{r }

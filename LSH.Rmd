@@ -5,7 +5,7 @@ output: pdf_document
 
 #Perform approximate nearest neighbor analysis
 ## Introduction
-Dans le context de text-mining, si on veut détecter des documents similaires ou des documents identiques, on doit construire un modèle qui compare la similarité entre tous les pairs de documents. Par exemple, le problème de construire de clusters ou k-plus proches voisins. Cependent, le coût de calcul va exploser très vite en fontion de taille de données et la dimension du problème. Pour remédier ce problème, on peut utiliser l'algorithme LSH qui utilise des fonctions min-hashing randomnisées pour estimer le cofficient Jaccard-similarité entre des documents afin de trouver des pairs de documents tels que leur coefficient de similarité est supérieur à un niveau donné. 
+Dans le context de text-mining, si on veut détecter des documents similaires ou des documents identiques, on doit construire un modèle qui compare la similarité entre tous les pairs de documents. Par exemple, pour le problème de construire de clusters ou k-plus proches voisins, on peut définir une distance de similarité de Jaccard entre deux documents, et appliquer des algorithmes d'apprentissage non-superisé. Cependent, le coût de calcul va exploser très vite en fontion de taille de données et la dimension du problème. Pour remédier ce problème, on peut utiliser l'algorithme LSH qui utilise des fonctions min-hashing randomnisées pour estimer le cofficient Jaccard-similarité entre des documents afin de trouver des pairs de documents tels que leur coefficient de similarité est supérieur à un niveau donné. L'idée principale est d'utiliser une famille de fonction de hachage choisies telles que des points proches dans l'espace d'origine aient une forte probabilité d'avoir la même valeur de hachage.
 
 ## Model LSH pour text mining
 
@@ -16,10 +16,10 @@ $JS(A,B) =\frac{|A\bigcap B|}{|A \bigcup B|}$
 Fonction min-hashing $m(. )$ va rendre le rang de premier terme appartient au document selon l'ordre générée par cette fonction hashing. On définit une variable aléatoire $x(A,B)$ telle que :  
 $x(A,B) = 1$ si $m(A) = m(B)$   
 $x(A,B) =0$  sinon.   
-Par conséquence, la variable aléatoire $x(A,B)$ suit la loi B(JS(A,B)). Donc, on peut estmier la similarité de Jaccard, en générant des observations iid de cette loi $B(JS(A,B))$ par des fonctions min-hashing et moyennant des valuers.  
+Par conséquence, la variable aléatoire $x(A,B)$ suit la loi B(JS(A,B)). Donc, on peut estimer la similarité de Jaccard, en générant des observations iid de cette loi $B(JS(A,B))$ par des fonctions min-hashing et moyennant des valuers.  
 
 ### Locality sensitive hashing (LSH)
-Dans le cardre de text mining, on utilise la fonction hashing par bloc des singatures générées par les fonctions min-hashing, comme la famille de LSH. Effectivement, si l'on sonsidère $n$ signatures avec $b$ blocs de taille $r$ ou bien : $n= b*r$, la fonction LSH considère que deux documents forment un pair de candidat s'ils sont coïncides au moins pour un blocs. La probabilité telle que une pair de documents est une paire de candidat est ainsi donnée par :  
+Dans le cardre de text mining, on utilise la fonction hashing par bloc des singatures générées par les fonctions min-hashing. Effectivement, si l'on considère $n$ signatures avec $b$ blocs de taille $r$ ou bien : $n= b*r$, la fonction LSH considère que deux documents forment un pair de candidat s'ils sont coïncides au moins pour un blocs. La probabilité telle que une pair de documents est une paire de candidat est ainsi donnée par :  
 $P(JS(A,B)) = 1 - ( 1-JS(A,B)^{r} )^ b$  
 
 
@@ -28,7 +28,7 @@ plot(seq(0,1,0.01),   1- ( 1 -  seq(0,1,0.01)**10 )**50 , type = "l", xlab = "JS
 
 ```
 
-Cette  probabilité possède une forme S-courbe, croissante $P(0) = 0$ et $P(1) =1$.  
+Cette  probabilité possède une forme S-courbe, croissante $P(0) = 0$ et $P(1) =1$. Cette probabilité nous garantit la bonne définition d'une fonction de hachage, c-à-d des fonctions de hachage doivent permettre aux points proches d'entrer fréquemment en collision (i.e. $h(p) = h(q)$) et inversement, les points éloignés ne doivent entrer que rarement en collision. 
 
 
 
@@ -46,7 +46,8 @@ library("foreach")
 library("SnowballC")
 library("igraph")
 ```
-
+La fonction suivante permets de calculer le seuil de Jaccard avec des valeurs de $h$ et $b$ données. 
+Donc, on chosit des valeurs de $h$ et $b$ tq le seuil soit convenable (entre 0.5 et 0.7  )
 ```{r }
 lsh_threshold(h = 200, b = 25)
 ```
@@ -125,6 +126,7 @@ Comparaison les pairs de candidat avec la similarité de Jaccard
 lsh_compare(candidates, corpus, jaccard_similarity, progress = FALSE)
 ```
 
+Des pairs choisies donnent des valeurs de seuil généralement supérieures au seuil du modèle.
 
 
 
@@ -135,7 +137,7 @@ a[-2*c(1:nrow(candidates))] = as.integer(candidates$a)
 ```
 
 
-
+On visualise des rélations (pair de candidat ) par le graph (On filtre des noeuds importantes dont le degré est supérieur à $4$  )
 ```{r}
 gr<-graph( edges=a+1,  directed=F ) 
 gr2=delete.vertices(gr,which(degree(gr)<4))
@@ -144,15 +146,15 @@ plot(gr2, vertex.size=4, vertex.label=NA, layout= layout.lgl)
 ```
 
 
-Cherher des composants (clusters ) dans ce graphe 
+Cherher des composants (clusters ) dans ce graphe et les colorer.
 
 ```{r}
 clusters <- clusters(gr2)
 plot(gr2, vertex.color = clusters$membership, vertex.size=4, vertex.label=NA, layout= layout.lgl)
 ```
+Il y a $884$ composants connex qui sont détectés dans ce graph.
 
-
-Pour chaque cluster, on cherche des mots les plus fréquents et les affiche 
+Pour chaque cluster, on cherche des mots les plus fréquents et les affiche. On affiche le résultat pour les $20$ premiers clusters.
 
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -173,7 +175,7 @@ Venronp <- Venronp %>%
 
 
 ```{r}
-for (i in 1: (clusters$no)) {
+for (i in 1: 20) {
   print(paste(" Pour le cluster ", i, "les mots specifiques sont: " ))
   doc = which(clusters$membership== i)
   corpus_cluster = Venronp[doc]

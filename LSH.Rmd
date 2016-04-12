@@ -137,7 +137,7 @@ a[-2*c(1:nrow(candidates))] = as.integer(candidates$a)
 ```
 
 
-On visualise des rélations (pair de candidat ) par le graph (On filtre des noeuds importantes dont le degré est supérieur à $4$  )
+On visualise des rélations (pair de candidat ) par le graph. On filtre des noeuds importantes dont le degré est supérieur à $4$  
 ```{r}
 gr<-graph( edges=a+1,  directed=F ) 
 gr2=delete.vertices(gr,which(degree(gr)<4))

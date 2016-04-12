@@ -152,7 +152,7 @@ Cherher des composants (clusters ) dans ce graphe et les colorer.
 clusters <- clusters(gr2)
 plot(gr2, vertex.color = clusters$membership, vertex.size=4, vertex.label=NA, layout= layout.lgl)
 ```
-Il y a $884$ composants connex qui sont détectés dans ce graph.
+Il y a $884$ composants connexes qui sont détectés dans ce graph.
 
 Pour chaque cluster, on cherche des mots les plus fréquents et les affiche. On affiche le résultat pour les $20$ premiers clusters.
 

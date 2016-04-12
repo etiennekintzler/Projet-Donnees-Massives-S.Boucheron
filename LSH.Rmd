@@ -5,7 +5,7 @@ output: pdf_document
 
 #Perform approximate nearest neighbor analysis
 ## Introduction
-Pour traiter le problème de cluster ou k-plus proches voisins, on doit comparer tous les pairs d'observations possibles dans les données, ainsi le coût de calcul va exploser très vite en fontion de taille de données et la dimension du problème. Pour remédier ce problème, on peut utiliser l'algorithme LSH qui utilise des fonctions min-hashing randomnisées pour estimer le cofficient Jaccard-similarité entre des documents afin de trouver des pairs de documents tels que leur coefficient de similarité est supérieur à un niveau donné. 
+Dans le context de text-mining, si on veut détecter des documents similaires ou des documents identiques, on doit construire un modèle qui compare la similarité entre tous les pairs de documents. Par exemple, le problème de construire de clusters ou k-plus proches voisins. Cependent, le coût de calcul va exploser très vite en fontion de taille de données et la dimension du problème. Pour remédier ce problème, on peut utiliser l'algorithme LSH qui utilise des fonctions min-hashing randomnisées pour estimer le cofficient Jaccard-similarité entre des documents afin de trouver des pairs de documents tels que leur coefficient de similarité est supérieur à un niveau donné. 
 
 ## Model LSH pour text mining
 

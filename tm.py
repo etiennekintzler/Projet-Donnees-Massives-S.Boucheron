@@ -5,7 +5,7 @@ path_input = "/home/kintzler/R/projet_boucheron/maildir/"
 path_output ="/home/kintzler/R/projet_boucheron/DATA/"
 
 stopwords = stop_words.get_stop_words('en')
-stopwords.extend("asap http www fyi".split())
+stopwords.extend("asap http www fyi hotmail".split())
 stopwords.extend(open("stopwords.txt","r").read().split())
 
 stopwords = list(set(stopwords)) #supprime les doublons
@@ -79,8 +79,8 @@ for subfolder in docs:
         email_new = email_new.lower()
         email_new = re.sub("[^a-zA-Z'-]", " ", email_new) #on conserve le " ' " avant de retirer le stop words
         email_new = ' '.join([word for word in email_new.split() if word.lower() not in stopwords])
+        email_new = re.sub("[^a-zA-Z]", " ", email_new) #on peut retirer les " ' " et "-" après avoir retirer les stop words
         email_new = ' '.join([word for word in email_new.split() if len(word)>2])
-        email_new = re.sub("[^a-zA-Z]", " ", email_new) #on peut retirer les " ' " après avoir retirer les stop words
         email_new = re.sub(' +',' ',email_new)
         docs_final.append(email_new)
 
